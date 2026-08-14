@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, Upload, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Camera, Upload, RefreshCw, CheckCircle2, Save, X } from 'lucide-react';
 import { PROFILE } from '../../data/portfolioData';
 
 interface ProfilePhotoCardProps {
@@ -11,16 +11,20 @@ export const ProfilePhotoCard: React.FC<ProfilePhotoCardProps> = ({
   className = '',
   showUploadButton = true
 }) => {
-  const [photoUrl, setPhotoUrl] = useState<string>(PROFILE.profileImage);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [defaultPhoto] = useState<string>(PROFILE.profileImage);
+  const [savedPhotoUrl, setSavedPhotoUrl] = useState<string>(PROFILE.profileImage);
+  const [previewPhotoUrl, setPreviewPhotoUrl] = useState<string>(PROFILE.profileImage);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Check if user uploaded a custom photo previously
     const savedPhoto = localStorage.getItem('ariti_portfolio_custom_photo');
     if (savedPhoto) {
-      setPhotoUrl(savedPhoto);
+      setSavedPhotoUrl(savedPhoto);
+      setPreviewPhotoUrl(savedPhoto);
       PROFILE.profileImage = savedPhoto;
     }
   }, []);
@@ -43,26 +47,45 @@ export const ProfilePhotoCard: React.FC<ProfilePhotoCardProps> = ({
       return;
     }
 
-    setIsUploading(true);
     const reader = new FileReader();
 
     reader.onload = (event) => {
       const result = event.target?.result as string;
       if (result) {
-        setPhotoUrl(result);
-        PROFILE.profileImage = result;
-        try {
-          localStorage.setItem('ariti_portfolio_custom_photo', result);
-        } catch (err) {
-          console.warn('LocalStorage size limit exceeded for photo storage', err);
-        }
-        setIsUploading(false);
-        setUploadSuccess(true);
-        setTimeout(() => setUploadSuccess(false), 3000);
+        setPreviewPhotoUrl(result);
+        setHasUnsavedChanges(true);
+        setSaveSuccess(false);
       }
     };
 
     reader.readAsDataURL(file);
+  };
+
+  const handleSavePhoto = () => {
+    if (!previewPhotoUrl) return;
+
+    setIsSaving(true);
+    try {
+      localStorage.setItem('ariti_portfolio_custom_photo', previewPhotoUrl);
+      PROFILE.profileImage = previewPhotoUrl;
+      setSavedPhotoUrl(previewPhotoUrl);
+      setHasUnsavedChanges(false);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3500);
+    } catch (err) {
+      console.warn('LocalStorage size limit exceeded for photo storage', err);
+      alert('Could not save photo to browser storage (size limit exceeded). Try a smaller image file.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancelPreview = () => {
+    setPreviewPhotoUrl(savedPhotoUrl);
+    setHasUnsavedChanges(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -79,9 +102,17 @@ export const ProfilePhotoCard: React.FC<ProfilePhotoCardProps> = ({
   const handleReset = (e: React.MouseEvent) => {
     e.stopPropagation();
     localStorage.removeItem('ariti_portfolio_custom_photo');
-    setPhotoUrl(PROFILE.profileImage);
-    window.location.reload();
+    PROFILE.profileImage = defaultPhoto;
+    setSavedPhotoUrl(defaultPhoto);
+    setPreviewPhotoUrl(defaultPhoto);
+    setHasUnsavedChanges(false);
+    setSaveSuccess(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
+
+  const isCustomPhotoSaved = localStorage.getItem('ariti_portfolio_custom_photo') !== null;
 
   return (
     <div
@@ -100,7 +131,7 @@ export const ProfilePhotoCard: React.FC<ProfilePhotoCardProps> = ({
 
       <div className="aspect-[4/3] sm:aspect-[16/10] lg:aspect-square relative overflow-hidden bg-slate-950">
         <img
-          src={photoUrl}
+          src={previewPhotoUrl}
           alt={`${PROFILE.name} - Software Developer & Full-Stack Engineer`}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-500"
@@ -109,46 +140,80 @@ export const ProfilePhotoCard: React.FC<ProfilePhotoCardProps> = ({
         {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
 
-        {/* Upload Action Overlay */}
+        {/* Action Controls Bar Top-Right */}
         {showUploadButton && (
           <div className="absolute top-3 right-3 flex items-center gap-2 z-20">
-            {localStorage.getItem('ariti_portfolio_custom_photo') && (
+            {isCustomPhotoSaved && !hasUnsavedChanges && (
               <button
                 type="button"
                 onClick={handleReset}
                 title="Reset to default photo"
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 backdrop-blur-md text-xs transition-colors"
+                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 backdrop-blur-md text-xs transition-colors flex items-center gap-1"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline text-[11px]">Reset</span>
               </button>
             )}
 
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/90 hover:bg-blue-600 text-white border border-blue-400/40 text-xs font-medium backdrop-blur-md shadow-lg transition-colors cursor-pointer"
-            >
-              <Upload className="w-3.5 h-3.5" />
-              <span>Upload Actual Photo</span>
-            </button>
+            {!hasUnsavedChanges ? (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/90 hover:bg-blue-600 text-white border border-blue-400/40 text-xs font-medium backdrop-blur-md shadow-lg transition-all cursor-pointer"
+              >
+                <Upload className="w-3.5 h-3.5" />
+                <span>Upload Photo</span>
+              </button>
+            ) : null}
+          </div>
+        )}
+
+        {/* Unsaved Changes Save Action Banner */}
+        {hasUnsavedChanges && (
+          <div className="absolute top-3 inset-x-3 z-30 p-2.5 rounded-xl bg-slate-900/95 border border-emerald-500/50 backdrop-blur-md shadow-2xl flex items-center justify-between gap-2 animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center gap-2 text-xs font-medium text-emerald-400 min-w-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+              <span className="truncate">New photo ready! Save changes?</span>
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={handleCancelPreview}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-colors"
+                title="Cancel"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={handleSavePhoto}
+                disabled={isSaving}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-lg transition-all cursor-pointer active:scale-95"
+              >
+                <Save className="w-3.5 h-3.5" />
+                <span>{isSaving ? 'Saving...' : 'Save Photo'}</span>
+              </button>
+            </div>
           </div>
         )}
 
         {/* Success Alert */}
-        {uploadSuccess && (
-          <div className="absolute top-12 right-3 z-30 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-medium shadow-xl flex items-center gap-1.5 animate-in fade-in slide-in-from-top-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>Photo updated!</span>
+        {saveSuccess && (
+          <div className="absolute top-3 right-3 z-30 px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+            <span>Photo Saved Successfully!</span>
           </div>
         )}
 
         {/* Dropzone visual hint on drag */}
-        <div className="absolute inset-0 bg-blue-600/10 border-2 border-dashed border-blue-400/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center justify-center">
-          <div className="bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-mono-tech text-blue-300 border border-blue-500/30 flex items-center gap-2 shadow-2xl">
-            <Camera className="w-4 h-4 text-blue-400" />
-            <span>Click or Drop your photo file here</span>
+        {!hasUnsavedChanges && (
+          <div className="absolute inset-0 bg-blue-600/10 border-2 border-dashed border-blue-400/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center justify-center">
+            <div className="bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-mono-tech text-blue-300 border border-blue-500/30 flex items-center gap-2 shadow-2xl">
+              <Camera className="w-4 h-4 text-blue-400" />
+              <span>Click or Drop your photo file here</span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Info Card Bar */}
@@ -169,3 +234,4 @@ export const ProfilePhotoCard: React.FC<ProfilePhotoCardProps> = ({
     </div>
   );
 };
+
