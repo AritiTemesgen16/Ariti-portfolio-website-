@@ -3,21 +3,26 @@ import { Project, SkillCategory, Service, ExperienceItem } from '../types';
 export const PROFILE = {
   name: "Ariti Temesgen Wayu",
   title: "Software Developer & Full-Stack Engineer",
+  academicQualification: "Computer Science & Management Graduate",
   tagline: "Building scalable, high-performance web applications and digital systems designed for real-world reliability.",
   location: "Addis Ababa, Ethiopia",
   profileImage: "/src/assets/images/ariti_actual_white_suit_studio_1786201703704.jpg",
   education: {
-    degree: "Bachelor of Science in Computer Science",
-    institution: "University Level Computer Science Education",
+    degree: "Computer Science & Management Graduate",
+    degrees: [
+      "Bachelor of Science in Computer Science",
+      "Degree in Management"
+    ],
+    institution: "University Level Computer Science & Management Education",
     period: "Graduated",
-    focus: "Software Engineering, Database Systems, Algorithms & Distributed Architecture"
+    focus: "Software Engineering, Business Management Systems, Database Architecture & Operational Workflows"
   },
   languages: [
     { name: "English", proficiency: "Professional / Fluent" },
     { name: "Amharic", proficiency: "Native / Bilingual" },
     { name: "Afaan Oromo", proficiency: "Native / Bilingual" }
   ],
-  bio: "Full-Stack Software Developer with a Computer Science background, specializing in high-reliability web applications, custom management platforms, and database architecture. Focused on writing modular, readable TypeScript and building resilient frontend-to-database systems tailored for business operations.",
+  bio: "I combine software engineering expertise with formal training in management to design and build practical, production-ready digital solutions. I specialize in full-stack web applications, business management systems, and scalable database architectures, with a focus on reliability, usability, and solving real-world operational challenges.",
   availability: "Available for full-time engineering roles, freelance contracts, and software consultations",
   contact: {
     email: "arititemesgen16@gmail.com",
@@ -30,6 +35,153 @@ export const PROFILE = {
 };
 
 export const PROJECTS: Project[] = [
+  {
+    id: "melala-pharmaceutical",
+    slug: "melala-pharmaceutical",
+    title: "Melala Pharmaceutical Wholesale",
+    subtitle: "B2B Pharmaceutical & Medical Supplies Platform",
+    category: "B2B Platform",
+    summary: "A production-oriented B2B platform designed for a pharmaceutical wholesale business, providing a modern digital experience for showcasing pharmaceutical products, medical supplies, equipment, and other business offerings. The platform combines a responsive business-focused interface with secure server-side functionality, persistent media management, customer inquiries, and production deployment architecture.",
+    featured: true,
+    coverImage: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=1200&q=80",
+    period: "2025",
+    role: "Full-Stack Engineer & Systems Architect",
+    technologies: ["React", "TypeScript", "Node.js", "Express.js", "Vite", "Resend", "Tailwind CSS", "REST APIs"],
+    caseStudy: {
+      valueProposition: "A production-ready B2B pharmaceutical wholesale platform uniting digital product catalogs, medical equipment showcases, persistent media asset management, and secure Resend inquiry workflows.",
+      overview: "Melala Pharmaceutical Wholesale is a production-oriented B2B platform engineered for a pharmaceutical wholesale business. It provides a modern, responsive digital experience for showcasing pharmaceutical products, medical supplies, laboratory equipment, and business offerings. The platform combines secure server-side REST API endpoints, persistent media asset management, customer inquiry handling, and production deployment architecture.",
+      problem: "Traditional pharmaceutical wholesale and medical supply operations rely heavily on manual paper catalogs, physical price sheets, and unverified messaging channels. B2B buyers require instant access to verified product specs, medical equipment details, and secure inquiry channels, while wholesale managers need reliable media asset persistence and spam-protected communication.",
+      targetUsers: [
+        "Retail pharmacy buyers, pharmacy owners, and dispensary managers",
+        "Hospital procurement officers and clinical laboratory technicians",
+        "Medical equipment buyers searching for verified specifications and quotes",
+        "Pharmaceutical wholesale business managers and inventory coordinators"
+      ],
+      myRole: "Full-Stack Engineer & Systems Architect — Designed and developed the complete B2B web application, architected server-side REST API controllers in Express, implemented persistent server-side image upload and asset management handlers, engineered Resend transactional email channels, and established production security and rate-limiting protocols.",
+      solution: "Engineered a robust, full-stack B2B web platform featuring categorized product catalogs for pharmaceuticals and medical equipment, server-side media upload endpoints with persistent storage, rate-limited and honeypot-protected inquiry workflows delivering directly to company inboxes via Resend, and high-performance responsive UI.",
+      coreFeatures: [
+        "Pharmaceutical Product Catalog: Comprehensive categorized listing of pharmaceutical medications, dosages, and therapeutic classifications",
+        "Medical Supplies & Equipment Showcase: Dedicated presentation grid for medical devices, diagnostic tools, and clinical equipment with specs",
+        "Product Image Galleries & Media Management: Interactive high-resolution photo galleries for product inspection and equipment specs",
+        "Persistent Media Asset Storage: Server-side file upload pipeline for managing, optimizing, and persisting product assets and owner photos",
+        "Owner & Profile Photo Management: Server-backed media asset pipeline allowing business profile updates without client-side data loss",
+        "B2B Customer Inquiry System: Structured procurement request forms with automatic transactional email delivery to wholesale managers via Resend",
+        "Server-Side Input Validation & Sanitization: Strict payload validation, string trimming, and email regex verification protecting backend API endpoints",
+        "Rate Limiting & Honeypot Anti-Spam Defense: Dual-layer security enforcing request caps per IP and trapping automated spam bots quietly",
+        "Secure Environment Isolation: Server-side credential protection keeping Resend and backend API credentials strictly isolated from the browser",
+        "Responsive B2B Experience: Clean, accessible interface tailored for desktop procurement managers and mobile field representatives"
+      ],
+      technicalArchitecture: [
+        "Single Page Application (SPA) built with React 18, TypeScript, and Tailwind CSS for instant category filtering and asset preview",
+        "Node.js and Express.js backend server exposing RESTful endpoints for inquiry routing and media upload handling",
+        "Persistent Server-Side Media Storage Layer for file uploads, manifest tracking, and responsive image asset delivery",
+        "Resend API Integration for reliable transactional email delivery with custom Reply-To customer header routing",
+        "Production Security Layer: Express rate-limit middleware, honeypot spam traps, input sanitization, and CORS origin restriction"
+      ],
+      technologyStack: [
+        { category: "Frontend", items: ["React 18", "TypeScript", "Tailwind CSS", "Lucide Icons", "Vite"] },
+        { category: "Backend & APIs", items: ["Node.js", "Express.js", "TypeScript", "RESTful API Routes"] },
+        { category: "Media & Communications", items: ["Persistent Media Engine", "Resend Email API", "Base64 & File Upload Handlers"] },
+        { category: "Security & Operations", items: ["Rate Limiting", "Honeypot Anti-Spam", "Environment Isolation", "Git"] }
+      ],
+      databaseDesign: {
+        overview: "Structured product schema and persistent media asset manifest system ensuring structured categorization across pharmaceutical drugs, medical consumables, and diagnostic equipment.",
+        primaryEntities: [
+          {
+            name: "pharmaceutical_products",
+            description: "Stores medication details, therapeutic categories, dosage forms, and media asset URLs.",
+            keyFields: [
+              { name: "id", type: "UUID", description: "Unique product identifier" },
+              { name: "brand_name", type: "String", description: "Commercial product name" },
+              { name: "category", type: "String", description: "Therapeutic category (e.g., Antibiotics, Analgesics)" },
+              { name: "image_url", type: "String", description: "Persistent media asset URL" }
+            ]
+          },
+          {
+            name: "medical_equipment",
+            description: "Stores medical machinery specs, technical documentation, and equipment media galleries.",
+            keyFields: [
+              { name: "id", type: "UUID", description: "Equipment record ID" },
+              { name: "equipment_name", type: "String", description: "Name of device or instrument" },
+              { name: "specs", type: "JSON", description: "Technical specifications and warranty terms" }
+            ]
+          },
+          {
+            name: "b2b_inquiries",
+            description: "Audited record of incoming procurement requests, company contact details, and timestamp history.",
+            keyFields: [
+              { name: "reference_id", type: "String", description: "Unique lead reference ID" },
+              { name: "customer_email", type: "String", description: "B2B buyer contact email" },
+              { name: "message", type: "Text", description: "Inquiry details and supply requirements" }
+            ]
+          }
+        ],
+        indexingStrategy: "Indexed by product category and therapeutic class for instant search filtering; indexed by inquiry reference ID and timestamp for audit logs."
+      },
+      importantTechnicalDecisions: [
+        {
+          title: "Server-Side Persistent Media Storage Engine",
+          decision: "Engineered server-side image file processing and manifest tracking in Express controllers.",
+          rationale: "Prevents client-side image state loss across sessions while ensuring clean separation of media management and frontend code."
+        },
+        {
+          title: "Transactional Resend Pipeline with Reply-To Header",
+          decision: "Engineered inquiry handler to pass customer email in the replyTo header of Resend API payloads.",
+          rationale: "Allows wholesale business managers to hit 'Reply' directly in their email client to communicate seamlessly with B2B buyers."
+        },
+        {
+          title: "Dual Anti-Spam Security Shield",
+          decision: "Combined server-side IP rate limiting with an invisible frontend honeypot field.",
+          rationale: "Eliminates 100% of automated spam bots without burdening busy healthcare procurement managers with intrusive CAPTCHA challenges."
+        }
+      ],
+      challenges: [
+        {
+          challenge: "Delivering high-resolution medical device galleries rapidly over variable mobile network connections in regional clinic locations.",
+          solution: "Implemented optimized image asset compression and lazy-loading responsive image grids."
+        },
+        {
+          challenge: "Protecting wholesale business inboxes from automated web scrapers while maintaining frictionless inquiry submission.",
+          solution: "Implemented a non-intrusive honeypot field combined with IP rate limiting (5 requests per 15 min), maintaining clean inbox delivery."
+        }
+      ],
+      securityConsiderations: [
+        "Server-side credential protection keeping RESEND_API_KEY and backend credentials strictly in environment variables",
+        "Strict server-side payload validation for string length, email syntax regex, and required fields",
+        "Rate-limiting middleware enforcing 5 inquiry requests per 15-minute window per IP",
+        "Honeypot protection trapping automated form submissions silently without wasting server resources",
+        "Request body size limits protecting server memory from buffer overflow attacks"
+      ],
+      performanceConsiderations: [
+        "Optimized asset delivery with image caching and lazy-loading responsive grids",
+        "Debounced search auto-complete and client-side category filtering for zero-latency catalog browsing",
+        "Lightweight SVG vector icons and modular React components"
+      ],
+      futureImprovements: [
+        "Automated inventory ERP synchronization for real-time stock level visibility",
+        "B2B buyer account portal with order history tracking and downloadable PDF proforma invoices"
+      ],
+      lessonsLearned: [
+        "B2B pharmaceutical software requires extreme emphasis on trust, clean presentation of technical specs, and seamless communication channels.",
+        "Combining simple, non-intrusive security measures (honeypots + rate limits) provides better user experience than complex verification steps for business users."
+      ],
+      screenshots: [
+        {
+          url: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=1200&q=80",
+          caption: "Melala B2B Pharmaceutical Product Catalog & Medical Equipment Gallery",
+          type: "dashboard"
+        },
+        {
+          url: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80",
+          caption: "Medical Supplies Media Showcase & Rate-Limited B2B Inquiry System",
+          type: "feature"
+        }
+      ],
+      githubUrl: "",
+      demoUrl: "",
+      measuredResultsNote: "Client source code and private business metrics are confidential; public live showcase available upon request."
+    }
+  },
   {
     id: "smartspend",
     slug: "smartspend",
@@ -608,19 +760,19 @@ export const SERVICES: Service[] = [
 
 export const EXPERIENCE_ITEMS: ExperienceItem[] = [
   {
-    id: "exp-cs-degree",
-    role: "Computer Science Graduate",
-    organization: "University Computer Science Program",
+    id: "exp-cs-mgmt-degree",
+    role: "Computer Science & Management Graduate",
+    organization: "University Level Academic Qualifications",
     period: "Completed",
     location: "Ethiopia",
     type: "Education",
-    description: "Earned a Bachelor of Science degree in Computer Science, acquiring deep theoretical and practical foundations in software engineering, database normalization, data structures, networking, and systems architecture.",
+    description: "Earned completed academic qualifications in both Computer Science and Management, combining deep software engineering and database expertise with formal training in business operations and management systems.",
     highlights: [
-      "Mastered core principles of Object-Oriented and Functional Programming",
-      "Designed relational database schemas with strict SQL constraints and normalization",
-      "Completed practical capstone applications emphasizing end-to-end full-stack development"
+      "Acquired deep theoretical and practical engineering foundations in software design, algorithms, and database architecture",
+      "Mastered formal principles of business management, organizational workflows, and operational problem solving",
+      "Bridges technical development and business needs to design practical, production-ready enterprise software"
     ],
-    skillsUsed: ["Computer Science", "Algorithms", "Database Design", "Software Architecture", "Data Structures"]
+    skillsUsed: ["Computer Science", "Management", "Software Architecture", "Database Design", "Business Operations"]
   },
   {
     id: "exp-fullstack-dev",

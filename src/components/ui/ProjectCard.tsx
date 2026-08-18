@@ -84,9 +84,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenCaseStu
           </Button>
 
           <div className="flex items-center gap-1">
-            {project.githubUrl && (
+            {(project.githubUrl || project.caseStudy?.githubUrl) && (project.githubUrl || project.caseStudy?.githubUrl) !== '' && (
               <a
-                href={project.githubUrl}
+                href={project.githubUrl || project.caseStudy?.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -96,9 +96,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenCaseStu
                 <Github className="w-4 h-4" />
               </a>
             )}
-            {project.demoUrl && (
+            {(project.demoUrl || project.caseStudy?.demoUrl) && (project.demoUrl || project.caseStudy?.demoUrl) !== '' && (
               <a
-                href={project.demoUrl}
+                href={project.demoUrl || project.caseStudy?.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"

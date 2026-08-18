@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Project } from './types';
+import { ProfilePhotoProvider } from './context/ProfilePhotoContext';
 import { SEOHead } from './components/ui/SEOHead';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -47,68 +48,72 @@ export default function App() {
 
   if (activeDetailProject) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200 flex flex-col font-sans">
-        <SEOHead
-          title={`${activeDetailProject.title} Case Study | Ariti Temesgen Wayu`}
-          description={`${activeDetailProject.title}: ${activeDetailProject.caseStudy.valueProposition}`}
-          canonical={`https://arititemesgen.dev/projects/${activeDetailProject.id}`}
-          ogImage={activeDetailProject.coverImage}
-        />
-        <ProjectDetailPage
-          project={activeDetailProject}
-          onBack={() => setActiveDetailProject(null)}
-          onSelectProject={(project) => setActiveDetailProject(project)}
-          onContactClick={(service) => {
-            setActiveDetailProject(null);
-            if (service) setPreselectedService(service);
-            setTimeout(() => handleNavigate('contact'), 50);
-          }}
-        />
-        <Footer onNavigate={handleNavigate} />
-      </div>
+      <ProfilePhotoProvider>
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200 flex flex-col font-sans">
+          <SEOHead
+            title={`${activeDetailProject.title} Case Study | Ariti Temesgen Wayu`}
+            description={`${activeDetailProject.title}: ${activeDetailProject.caseStudy.valueProposition}`}
+            canonical={`https://arititemesgen.dev/projects/${activeDetailProject.id}`}
+            ogImage={activeDetailProject.coverImage}
+          />
+          <ProjectDetailPage
+            project={activeDetailProject}
+            onBack={() => setActiveDetailProject(null)}
+            onSelectProject={(project) => setActiveDetailProject(project)}
+            onContactClick={(service) => {
+              setActiveDetailProject(null);
+              if (service) setPreselectedService(service);
+              setTimeout(() => handleNavigate('contact'), 50);
+            }}
+          />
+          <Footer onNavigate={handleNavigate} />
+        </div>
+      </ProfilePhotoProvider>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200 flex flex-col font-sans">
-      
-      {/* Dynamic SEO & OpenGraph Head */}
-      <SEOHead />
+    <ProfilePhotoProvider>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200 flex flex-col font-sans">
+        
+        {/* Dynamic SEO & OpenGraph Head */}
+        <SEOHead />
 
-      {/* Sticky Glass Navbar */}
-      <Navbar
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-      />
+        {/* Sticky Glass Navbar */}
+        <Navbar
+          activeSection={activeSection}
+          onNavigate={handleNavigate}
+        />
 
-      {/* Main Page Layout Sections */}
-      <main className="flex-grow">
-        <HeroSection onNavigate={handleNavigate} />
-        <ProjectsSection onOpenCaseStudy={(project) => setActiveDetailProject(project)} />
-        <ServicesSection onSelectService={handleSelectService} />
-        <SkillsSection />
-        <AboutSection />
-        <ExperienceSection />
-        <ResumeSection onContactClick={() => handleNavigate('contact')} />
-        <ContactSection preselectedService={preselectedService} />
-      </main>
+        {/* Main Page Layout Sections */}
+        <main className="flex-grow">
+          <HeroSection onNavigate={handleNavigate} />
+          <ProjectsSection onOpenCaseStudy={(project) => setActiveDetailProject(project)} />
+          <ServicesSection onSelectService={handleSelectService} />
+          <SkillsSection />
+          <AboutSection />
+          <ExperienceSection />
+          <ResumeSection onContactClick={() => handleNavigate('contact')} />
+          <ContactSection preselectedService={preselectedService} />
+        </main>
 
-      {/* Footer */}
-      <Footer onNavigate={handleNavigate} />
+        {/* Footer */}
+        <Footer onNavigate={handleNavigate} />
 
-      {/* Interactive Full Case Study Modal */}
-      <CaseStudyModal
-        project={modalCaseStudy}
-        onClose={() => setModalCaseStudy(null)}
-        onOpenFullPage={handleOpenDetailProject}
-        onContactClick={(service) => {
-          setModalCaseStudy(null);
-          if (service) setPreselectedService(service);
-          handleNavigate('contact');
-        }}
-      />
+        {/* Interactive Full Case Study Modal */}
+        <CaseStudyModal
+          project={modalCaseStudy}
+          onClose={() => setModalCaseStudy(null)}
+          onOpenFullPage={handleOpenDetailProject}
+          onContactClick={(service) => {
+            setModalCaseStudy(null);
+            if (service) setPreselectedService(service);
+            handleNavigate('contact');
+          }}
+        />
 
-    </div>
+      </div>
+    </ProfilePhotoProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Github, Mail, ShieldCheck, Terminal, MapPin, Sparkles } from 'lucide-react';
+import { ArrowRight, Github, Mail, ShieldCheck, Terminal, MapPin, Sparkles, GraduationCap } from 'lucide-react';
 import { PROFILE } from '../../data/portfolioData';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -29,19 +29,30 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
               <span className="text-slate-800 dark:text-slate-200 font-medium">Available for Hire & Freelance Projects</span>
             </div>
 
-            {/* Main Headline */}
+            {/* Main Headline Hierarchy */}
             <div className="space-y-3">
+              {/* 1. Name */}
               <h1 className="text-3xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.15]">
                 {PROFILE.name}
               </h1>
+
+              {/* 2. Role Title */}
               <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400 tracking-tight">
-                Software Developer & Full-Stack Engineer
+                {PROFILE.title}
               </p>
+
+              {/* 3. Academic Qualification Line */}
+              <div className="pt-0.5">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 shadow-2xs">
+                  <GraduationCap className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                  <span>Computer Science & Management Graduate</span>
+                </div>
+              </div>
             </div>
 
-            {/* Clear Value Proposition */}
+            {/* 4. Professional Summary */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
-              Computer Science graduate specializing in full-stack web applications, custom management software, and resilient database architectures. I build production-ready systems engineered for operational reliability and user trust.
+              I combine software engineering expertise with formal training in management to design and build practical, production-ready digital solutions. I specialize in full-stack web applications, business management systems, and scalable database architectures, with a focus on reliability, usability, and solving real-world operational challenges.
             </p>
 
             {/* Location & Languages bar */}
@@ -93,8 +104,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Major Systems Built</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-mono-tech font-bold text-slate-900 dark:text-slate-100">B.Sc.</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Computer Science</div>
+                <div className="text-xl sm:text-2xl font-mono-tech font-bold text-slate-900 dark:text-slate-100">CS & Mgmt</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Degrees Held</div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl font-mono-tech font-bold text-slate-900 dark:text-slate-100">100%</div>
@@ -132,7 +143,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                   <span className="text-slate-400">name:</span> <span className="text-emerald-300">"{PROFILE.name}"</span>,
                 </div>
                 <div className="pl-4">
-                  <span className="text-slate-400">degree:</span> <span className="text-emerald-300">"B.Sc. Computer Science"</span>,
+                  <span className="text-slate-400">degrees:</span> [
+                  <span className="text-amber-300">"Computer Science"</span>, <span className="text-amber-300">"Management"</span>
+                  ],
+                </div>
+                <div className="pl-4">
+                  <span className="text-slate-400">specialization:</span> <span className="text-emerald-300">"Full-Stack & Business Systems"</span>,
                 </div>
                 <div className="pl-4">
                   <span className="text-slate-400">stack:</span> [
@@ -141,11 +157,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                 </div>
                 <div className="pl-4">
                   <span className="text-slate-400">systemsBuilt:</span> [
-                  <span className="text-emerald-300">"SmartSpend"</span>, <span className="text-emerald-300">"AgriConnect Ethiopia"</span>, <span className="text-emerald-300">"PharmaCore Ethiopia"</span>
+                  <span className="text-emerald-300">"SmartSpend"</span>, <span className="text-emerald-300">"AgriConnect"</span>, <span className="text-emerald-300">"PharmaCore"</span>
                   ],
-                </div>
-                <div className="pl-4">
-                  <span className="text-slate-400">spokenLanguages:</span> [<span className="text-cyan-300">"English"</span>, <span className="text-cyan-300">"Amharic"</span>, <span className="text-cyan-300">"Afaan Oromo"</span>],
                 </div>
                 <div className="pl-4">
                   <span className="text-slate-400">status:</span> <span className="text-emerald-400">"READY_FOR_COMMISSION"</span>
@@ -163,7 +176,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   <Badge variant="tech" size="sm">Relational Schemas</Badge>
-                  <Badge variant="tech" size="sm">REST API Design</Badge>
+                  <Badge variant="tech" size="sm">Business Systems</Badge>
                   <Badge variant="tech" size="sm">Batch Expiry Tracking</Badge>
                   <Badge variant="tech" size="sm">Multi-Language UX</Badge>
                 </div>

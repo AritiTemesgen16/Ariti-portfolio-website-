@@ -1,5 +1,6 @@
 import React from 'react';
 import { PROFILE, PROJECTS, EXPERIENCE_ITEMS } from '../../data/portfolioData';
+import { useProfilePhoto } from '../../context/ProfilePhotoContext';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import {
@@ -27,14 +28,7 @@ interface ResumeSectionProps {
 }
 
 export const ResumeSection: React.FC<ResumeSectionProps> = ({ onContactClick }) => {
-  const [profilePhoto, setProfilePhoto] = React.useState<string>(PROFILE.profileImage);
-
-  React.useEffect(() => {
-    const saved = localStorage.getItem('ariti_portfolio_custom_photo');
-    if (saved) {
-      setProfilePhoto(saved);
-    }
-  }, []);
+  const { photoUrl: profilePhoto } = useProfilePhoto();
   
   // Print handler
   const handlePrint = () => {
@@ -94,7 +88,7 @@ ${PROFILE.languages.map(l => `• ${l.name}: ${l.proficiency}`).join('\n')}
 
 VERIFIED ACHIEVEMENTS & HIGHLIGHTS
 ----------------------------------
-• Computer Science Honors Graduate with deep theoretical and practical engineering foundations.
+• Computer Science & Management Graduate combining software engineering expertise with formal business management training.
 • Architected and deployed 3 full-stack software systems (PharmaCore, AgriConnect Ethiopia, SmartSpend).
 • Engineered tri-lingual localization engines supporting Ge'ez (Amharic) and Latin scripts.
 ================================================================
@@ -402,7 +396,7 @@ VERIFIED ACHIEVEMENTS & HIGHLIGHTS
               <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Computer Science Honors Graduate with strong mathematical & software foundation</span>
+                  <span>Computer Science & Management Graduate with strong technical engineering & operational business foundations</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />

@@ -11,7 +11,7 @@ interface ProjectsSectionProps {
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onOpenCaseStudy }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const categories = ['All', 'FinTech', 'AgriTech', 'Enterprise App'];
+  const categories = ['All', 'B2B Platform', 'Enterprise App', 'FinTech', 'AgriTech'];
 
   const filteredProjects = selectedCategory === 'All'
     ? PROJECTS

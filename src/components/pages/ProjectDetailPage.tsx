@@ -111,25 +111,29 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
           {/* Quick Links / Actions */}
           <div className="flex items-center gap-3">
-            <a
-              href={cs.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono-tech font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700"
-              title="View Source Repository (Placeholder Link)"
-            >
-              <Github className="w-4 h-4" /> GitHub
-            </a>
+            {cs.githubUrl && cs.githubUrl !== '' && (
+              <a
+                href={cs.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono-tech font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700"
+                title="View Source Repository"
+              >
+                <Github className="w-4 h-4" /> GitHub
+              </a>
+            )}
 
-            <a
-              href={cs.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono-tech font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-xs"
-              title="View Live Demo (Placeholder Link)"
-            >
-              <ExternalLink className="w-4 h-4" /> Live Demo
-            </a>
+            {cs.demoUrl && cs.demoUrl !== '' && (
+              <a
+                href={cs.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono-tech font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-xs"
+                title="View Live Demo"
+              >
+                <ExternalLink className="w-4 h-4" /> Live Demo
+              </a>
+            )}
           </div>
 
         </div>

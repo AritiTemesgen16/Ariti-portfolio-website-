@@ -92,13 +92,20 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
           "PostgreSQL",
           "MongoDB",
           "Database Architecture",
+          "Business Management Systems",
           "Full-stack Web Applications"
         ],
         "knowsLanguage": ["English", "Amharic", "Afaan Oromo"],
-        "alumniOf": {
-          "@type": "EducationalOrganization",
-          "name": "Computer Science University Program"
-        }
+        "alumniOf": [
+          {
+            "@type": "EducationalOrganization",
+            "name": "Computer Science Degree Program"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "Management Degree Program"
+          }
+        ]
       },
       {
         "@context": "https://schema.org",

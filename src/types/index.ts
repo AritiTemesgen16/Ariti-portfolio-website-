@@ -68,13 +68,15 @@ export interface Project {
   slug: string;
   title: string;
   subtitle: string;
-  category: 'Full-Stack' | 'Enterprise App' | 'FinTech' | 'AgriTech' | 'HealthTech' | 'API & System';
+  category: 'Full-Stack' | 'Enterprise App' | 'FinTech' | 'AgriTech' | 'HealthTech' | 'API & System' | 'B2B Platform';
   summary: string;
   featured: boolean;
   coverImage: string;
   period: string;
   role: string;
   technologies: string[];
+  githubUrl?: string;
+  demoUrl?: string;
   caseStudy: CaseStudyData;
 }
 

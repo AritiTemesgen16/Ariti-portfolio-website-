@@ -41,7 +41,7 @@ export const AboutSection: React.FC = () => {
           {/* Left Column: Bio Narrative */}
           <div className="lg:col-span-7 space-y-6 text-slate-700 dark:text-slate-300 text-base leading-relaxed">
             <p className="font-medium text-slate-900 dark:text-slate-100 text-lg">
-              I am a Software Developer and Computer Science graduate based in Addis Ababa, Ethiopia. I build end-to-end web applications that solve real operational challenges for businesses, healthcare providers, and agricultural markets.
+              I am a Software Developer holding degrees in both Computer Science and Management, based in Addis Ababa, Ethiopia. I combine software engineering expertise with business and operational insight to build reliable digital solutions that solve real-world operational challenges.
             </p>
 
             <p>
