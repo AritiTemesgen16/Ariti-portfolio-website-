@@ -17,10 +17,12 @@ export default defineConfig(() => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
-      // Allow the production Render hostname when Vite middleware is used.
+      // Allow Render and the production custom domains when Vite middleware is used.
       allowedHosts: [
         'ariti-temesgen-portfolio.onrender.com',
         '.onrender.com',
+        'arititemesgen.com',
+        'www.arititemesgen.com',
       ],
     },
   };
