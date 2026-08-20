@@ -53,6 +53,33 @@ if (cloudinaryConfigured) {
   });
 }
 
+async function getCloudinaryProfileUrl(): Promise<{ url: string; version?: number } | null> {
+  if (!cloudinaryConfigured) return null;
+
+  // Resolve the actual Cloudinary asset instead of guessing its delivery URL.
+  // The fallback supports older uploads made before the folder/public-ID fix.
+  const candidatePublicIds = [
+    CLOUDINARY_PROFILE_ID,
+    `ariti-profile/${CLOUDINARY_PROFILE_ID}`,
+  ];
+
+  for (const publicId of candidatePublicIds) {
+    try {
+      const resource = await cloudinary.api.resource(publicId, {
+        resource_type: 'image',
+        type: 'upload',
+      });
+      if (resource?.secure_url) {
+        return { url: resource.secure_url, version: resource.version };
+      }
+    } catch {
+      // Try the alternate public-ID layout.
+    }
+  }
+
+  return null;
+}
+
 const ownerSessions = new Map<string, number>();
 const ownerLoginAttempts = new Map<string, { count: number; resetTime: number }>();
 const SESSION_TTL_MS = 60 * 60 * 1000;
@@ -105,7 +132,6 @@ async function startServer() {
     res.json({ status: 'ok', developer: 'Ariti Temesgen Wayu', timestamp: new Date().toISOString(), environment: process.env.NODE_ENV || 'development' });
   });
 
-  // Owner-only profile management session
   app.post('/api/owner/login', (req: Request, res: Response) => {
     const configuredPassword = process.env.OWNER_PHOTO_PASSWORD;
     if (!configuredPassword) {
@@ -150,12 +176,23 @@ async function startServer() {
   });
 
   // Public profile-photo endpoint. Cloudinary is the persistent source when configured.
-  app.get('/api/profile-photo/active', (_req: Request, res: Response) => {
+  app.get('/api/profile-photo/active', async (_req: Request, res: Response) => {
     if (cloudinaryConfigured) {
-      const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-      const url = `https://res.cloudinary.com/${cloudName}/image/upload/${CLOUDINARY_PROFILE_ID}`;
-      res.json({ success: true, url: `${url}?v=${Date.now()}`, isCustom: true, updatedAt: Date.now() });
-      return;
+      try {
+        const resource = await getCloudinaryProfileUrl();
+        if (resource) {
+          const cacheVersion = resource.version || Date.now();
+          res.json({
+            success: true,
+            url: `${resource.url}${resource.url.includes('?') ? '&' : '?'}v=${cacheVersion}`,
+            isCustom: true,
+            updatedAt: Date.now(),
+          });
+          return;
+        }
+      } catch (err) {
+        console.error('[CLOUDINARY PROFILE PHOTO RESOLVE ERROR]', err instanceof Error ? err.message : String(err));
+      }
     }
 
     const manifest = readManifest();
@@ -185,7 +222,6 @@ async function startServer() {
     else res.redirect(DEFAULT_PHOTO_PATH);
   });
 
-  // Upload is authenticated and persistent through Cloudinary.
   app.post('/api/profile-photo', requireOwner, async (req: Request, res: Response) => {
     if (!cloudinaryConfigured) {
       res.status(503).json({ error: 'Persistent photo storage is not configured. Add the Cloudinary environment variables in Render.' });
@@ -248,7 +284,23 @@ async function startServer() {
       return;
     }
     try {
-      await cloudinary.uploader.destroy(CLOUDINARY_PROFILE_ID, { resource_type: 'image', invalidate: true });
+      const candidates = [CLOUDINARY_PROFILE_ID, `ariti-profile/${CLOUDINARY_PROFILE_ID}`];
+      let deleted = false;
+      for (const publicId of candidates) {
+        try {
+          const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'image', invalidate: true });
+          if (result.result === 'ok') {
+            deleted = true;
+            break;
+          }
+        } catch {
+          // Try the alternate public-ID layout.
+        }
+      }
+      if (!deleted) {
+        res.status(404).json({ error: 'Profile photo was not found in persistent storage.' });
+        return;
+      }
       res.json({ success: true, message: 'Profile photo removed. The portfolio will use its default image.', url: DEFAULT_PHOTO_PATH, isCustom: false, updatedAt: Date.now() });
     } catch (err: unknown) {
       console.error('[CLOUDINARY PROFILE PHOTO DELETE ERROR]', err instanceof Error ? err.message : String(err));
