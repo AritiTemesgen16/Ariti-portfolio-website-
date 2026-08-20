@@ -14,6 +14,7 @@ import { ResumeSection } from './components/sections/ResumeSection';
 import { ContactSection } from './components/sections/ContactSection';
 import { CaseStudyModal } from './components/ui/CaseStudyModal';
 import { ProjectDetailPage } from './components/pages/ProjectDetailPage';
+import { OwnerPhotoPage } from './components/pages/OwnerPhotoPage';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -22,14 +23,12 @@ export default function App() {
   const [preselectedService, setPreselectedService] = useState<string | undefined>(undefined);
 
   const handleNavigate = (sectionId: string) => {
-    if (activeDetailProject) {
-      setActiveDetailProject(null);
-    }
+    if (activeDetailProject) setActiveDetailProject(null);
     setActiveSection(sectionId);
     setTimeout(() => {
       const element = document.getElementById(sectionId);
       if (element) {
-        const yOffset = -80; // Account for fixed navbar height
+        const yOffset = -80;
         const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
@@ -46,6 +45,11 @@ export default function App() {
     setActiveDetailProject(project);
   };
 
+  // Private owner administration route. It is deliberately outside the public portfolio UI.
+  if (window.location.pathname === '/owner/photo') {
+    return <OwnerPhotoPage />;
+  }
+
   if (activeDetailProject) {
     return (
       <ProfilePhotoProvider>
@@ -53,7 +57,7 @@ export default function App() {
           <SEOHead
             title={`${activeDetailProject.title} Case Study | Ariti Temesgen Wayu`}
             description={`${activeDetailProject.title}: ${activeDetailProject.caseStudy.valueProposition}`}
-            canonical={`https://arititemesgen.dev/projects/${activeDetailProject.id}`}
+            canonical={`https://arititemesgen.com/projects/${activeDetailProject.id}`}
             ogImage={activeDetailProject.coverImage}
           />
           <ProjectDetailPage
@@ -75,17 +79,8 @@ export default function App() {
   return (
     <ProfilePhotoProvider>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200 flex flex-col font-sans">
-        
-        {/* Dynamic SEO & OpenGraph Head */}
         <SEOHead />
-
-        {/* Sticky Glass Navbar */}
-        <Navbar
-          activeSection={activeSection}
-          onNavigate={handleNavigate}
-        />
-
-        {/* Main Page Layout Sections */}
+        <Navbar activeSection={activeSection} onNavigate={handleNavigate} />
         <main className="flex-grow">
           <HeroSection onNavigate={handleNavigate} />
           <ProjectsSection onOpenCaseStudy={(project) => setActiveDetailProject(project)} />
@@ -96,11 +91,7 @@ export default function App() {
           <ResumeSection onContactClick={() => handleNavigate('contact')} />
           <ContactSection preselectedService={preselectedService} />
         </main>
-
-        {/* Footer */}
         <Footer onNavigate={handleNavigate} />
-
-        {/* Interactive Full Case Study Modal */}
         <CaseStudyModal
           project={modalCaseStudy}
           onClose={() => setModalCaseStudy(null)}
@@ -111,9 +102,7 @@ export default function App() {
             handleNavigate('contact');
           }}
         />
-
       </div>
     </ProfilePhotoProvider>
   );
 }
-
