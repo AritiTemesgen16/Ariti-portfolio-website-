@@ -74,7 +74,8 @@ async function startServer() {
     });
   });
 
-  // Profile Photo API Routes (Single Source of Truth)
+  // Public profile-photo API is read-only. Mutation routes are intentionally blocked
+  // until a properly authenticated persistent owner-storage workflow is installed.
   app.get('/api/profile-photo/active', (_req: Request, res: Response) => {
     const manifest = readManifest();
     if (manifest.activeFilename) {
@@ -117,130 +118,20 @@ async function startServer() {
     }
   });
 
-  app.post('/api/profile-photo', (req: Request, res: Response) => {
-    try {
-      const { imageBase64, mimeType, fileName } = req.body || {};
+  app.post('/api/profile-photo', (_req: Request, res: Response) => {
+    res.status(403).json({ error: 'Profile photo changes are restricted to the site owner.' });
+  });
 
-      if (!imageBase64 || typeof imageBase64 !== 'string') {
-        res.status(400).json({ error: 'Image content is required for profile photo upload.' });
-        return;
-      }
+  app.put('/api/profile-photo', (_req: Request, res: Response) => {
+    res.status(403).json({ error: 'Profile photo changes are restricted to the site owner.' });
+  });
 
-      const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-      const cleanMimeType = (mimeType || 'image/jpeg').toLowerCase().trim();
-
-      if (!allowedMimeTypes.includes(cleanMimeType)) {
-        res.status(400).json({ error: 'Unsupported image format. Allowed formats: JPEG, PNG, WebP, GIF.' });
-        return;
-      }
-
-      const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
-      const buffer = Buffer.from(base64Data, 'base64');
-
-      const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
-      if (buffer.length === 0 || buffer.length > MAX_SIZE) {
-        res.status(400).json({
-          error: `Image file size must be between 1 KB and 5 MB. Provided size: ${(buffer.length / 1024 / 1024).toFixed(2)} MB.`
-        });
-        return;
-      }
-
-      ensureUploadsDirectory();
-
-      const extMap: Record<string, string> = {
-        'image/jpeg': '.jpg',
-        'image/jpg': '.jpg',
-        'image/png': '.png',
-        'image/webp': '.webp',
-        'image/gif': '.gif'
-      };
-      const ext = extMap[cleanMimeType] || '.jpg';
-      const timestamp = Date.now();
-      const newFilename = `profile_${timestamp}_${Math.random().toString(36).substring(2, 8)}${ext}`;
-      const newFilePath = path.join(UPLOADS_DIR, newFilename);
-
-      // STEP 1: Write new asset to disk FIRST (Failure Safety)
-      fs.writeFileSync(newFilePath, buffer);
-
-      if (!fs.existsSync(newFilePath) || fs.statSync(newFilePath).size === 0) {
-        res.status(500).json({ error: 'Failed to write new profile image to persistent storage.' });
-        return;
-      }
-
-      // STEP 2: Explicitly DELETE previous asset file from persistent storage
-      const previousManifest = readManifest();
-      if (previousManifest.activeFilename && previousManifest.activeFilename !== newFilename) {
-        const oldFilePath = path.join(UPLOADS_DIR, previousManifest.activeFilename);
-        if (fs.existsSync(oldFilePath)) {
-          try {
-            fs.unlinkSync(oldFilePath);
-            console.log(`[PERSISTENT STORAGE] Deleted old profile photo asset: ${previousManifest.activeFilename}`);
-          } catch (unlinkErr) {
-            console.error(`[PERSISTENT STORAGE CLEANUP WARNING] Could not delete file ${oldFilePath}:`, unlinkErr);
-          }
-        }
-      }
-
-      // STEP 3: Update manifest record to point EXCLUSIVELY to new asset
-      const newManifest: ProfilePhotoManifest = {
-        activeFilename: newFilename,
-        originalName: fileName ? String(fileName).slice(0, 100) : 'uploaded_photo',
-        mimeType: cleanMimeType,
-        updatedAt: timestamp
-      };
-      writeManifest(newManifest);
-
-      console.log(`[PROFILE PHOTO REPLACED] Active asset: ${newFilename}`);
-
-      res.status(200).json({
-        success: true,
-        message: 'Profile photo successfully replaced.',
-        url: `/api/profile-photo/image?t=${timestamp}`,
-        isCustom: true,
-        updatedAt: timestamp
-      });
-    } catch (err: unknown) {
-      const errMessage = err instanceof Error ? err.message : String(err);
-      console.error('[PROFILE PHOTO UPLOAD EXCEPTION]', errMessage);
-      res.status(500).json({ error: 'Internal server error processing profile photo replacement.' });
-    }
+  app.patch('/api/profile-photo', (_req: Request, res: Response) => {
+    res.status(403).json({ error: 'Profile photo changes are restricted to the site owner.' });
   });
 
   app.delete('/api/profile-photo', (_req: Request, res: Response) => {
-    try {
-      const manifest = readManifest();
-      if (manifest.activeFilename) {
-        const oldFilePath = path.join(UPLOADS_DIR, manifest.activeFilename);
-        if (fs.existsSync(oldFilePath)) {
-          try {
-            fs.unlinkSync(oldFilePath);
-            console.log(`[PERSISTENT STORAGE] Deleted custom profile photo asset: ${manifest.activeFilename}`);
-          } catch (unlinkErr) {
-            console.error('[PERSISTENT STORAGE WARNING] Could not delete custom file:', unlinkErr);
-          }
-        }
-      }
-
-      const timestamp = Date.now();
-      writeManifest({
-        activeFilename: null,
-        originalName: null,
-        mimeType: null,
-        updatedAt: timestamp
-      });
-
-      res.status(200).json({
-        success: true,
-        message: 'Profile photo reset to default.',
-        url: DEFAULT_PHOTO_PATH,
-        isCustom: false,
-        updatedAt: timestamp
-      });
-    } catch (err: unknown) {
-      const errMessage = err instanceof Error ? err.message : String(err);
-      console.error('[PROFILE PHOTO DELETE EXCEPTION]', errMessage);
-      res.status(500).json({ error: 'Failed to reset profile photo.' });
-    }
+    res.status(403).json({ error: 'Profile photo changes are restricted to the site owner.' });
   });
 
   // Contact Form Submission Endpoint with Resend Email Integration
@@ -374,56 +265,57 @@ ${leadRecord.additionalInfo}`;
     });
   });
 
-  // Dynamic Sitemap XML for SEO
+  // Dynamic Sitemap XML for SEO. Production hostname is fixed to prevent .dev drift.
   app.get('/sitemap.xml', (_req: Request, res: Response) => {
-    const baseUrl = process.env.APP_URL || 'https://arititemesgen.dev';
+    const baseUrl = 'https://arititemesgen.com';
+    const today = new Date().toISOString().split('T')[0];
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${baseUrl}/</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>${baseUrl}/projects</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>${baseUrl}/projects/smartspend</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>${baseUrl}/projects/agriconnect-ethiopia</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>${baseUrl}/projects/pharmacore-ethiopia</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>${baseUrl}/services</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>${baseUrl}/about</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>${baseUrl}/contact</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -435,7 +327,7 @@ ${leadRecord.additionalInfo}`;
 
   // Robots.txt for Search Engines
   app.get('/robots.txt', (_req: Request, res: Response) => {
-    const baseUrl = process.env.APP_URL || 'https://arititemesgen.dev';
+    const baseUrl = 'https://arititemesgen.com';
     const robots = `User-agent: *
 Allow: /
 Sitemap: ${baseUrl}/sitemap.xml
