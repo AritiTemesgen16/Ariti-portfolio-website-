@@ -4,8 +4,8 @@ export const PROFILE = {
   name: "Ariti Temesgen Wayu",
   title: "Software Developer & Full-Stack Engineer",
   academicQualification: "Computer Science & Management Graduate",
-  tagline: "Building scalable, high-performance web applications and digital systems designed for real-world reliability.",
-  location: "Addis Ababa, Ethiopia",
+  tagline: "Building practical, production-ready digital systems that connect software engineering with real business operations.",
+  location: "Hawassa, Ethiopia",
   profileImage: "/src/assets/images/ariti_actual_white_suit_studio_1786201703704.jpg",
   education: {
     degree: "Computer Science & Management Graduate",
@@ -22,7 +22,7 @@ export const PROFILE = {
     { name: "Amharic", proficiency: "Native / Bilingual" },
     { name: "Afaan Oromo", proficiency: "Native / Bilingual" }
   ],
-  bio: "I combine software engineering expertise with formal training in management to design and build practical, production-ready digital solutions. I specialize in full-stack web applications, business management systems, and scalable database architectures, with a focus on reliability, usability, and solving real-world operational challenges.",
+  bio: "I am Ariti Temesgen Wayu, a Software Developer & Full-Stack Engineer with academic training in Computer Science and Management. I build practical, production-ready web applications, business management systems, marketplaces, and database-backed platforms, combining engineering discipline with an understanding of business operations.",
   availability: "Available for full-time engineering roles, freelance contracts, and software consultations",
   contact: {
     email: "arititemesgen16@gmail.com",
@@ -327,20 +327,20 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: "agriconnect-ethiopia",
-    slug: "agriconnect-ethiopia",
-    title: "AgriConnect Ethiopia",
+    id: "ethiconnect",
+    slug: "ethiconnect",
+    title: "EthiConnect",
     subtitle: "Direct Farmer-to-Buyer Agricultural Marketplace",
     category: "AgriTech",
     summary: "A specialized digital marketplace platform designed to bridge the gap between regional agricultural producers and urban buyers across Ethiopia, facilitating direct crop listings, price discovery, and order management.",
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80",
-    period: "2024 - 2025",
+    period: "2024 - 2026",
     role: "Full-Stack Developer",
     technologies: ["React", "TypeScript", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS", "REST APIs", "Git"],
     caseStudy: {
       valueProposition: "A bi-directional, tri-lingual agricultural marketplace connecting regional crop farmers directly with commercial urban buyers to eliminate predatory middleman markups.",
-      overview: "AgriConnect Ethiopia empowers local grain, pulse, and produce farmers by connecting them directly with wholesalers, hotel chains, and retail food distributors across Ethiopia. By providing transparent commodity pricing and direct inquiry channels, the system reduces reliance on predatory regional brokers.",
+      overview: "EthiConnect empowers local grain, pulse, and produce farmers by connecting them directly with wholesalers, hotel chains, and retail food distributors across Ethiopia. By providing transparent commodity pricing and direct inquiry channels, the system reduces reliance on predatory regional brokers.",
       problem: "Smallholder farmers in regional Ethiopia face severe market information asymmetry and limited direct selling channels, leading to post-harvest crop spoilage and deflated earnings. Simultaneously, commercial buyers in urban centers struggle with sourcing consistency and price inflation.",
       targetUsers: [
         "Regional smallholder farmers and agricultural producer cooperatives",
@@ -465,8 +465,8 @@ export const PROJECTS: Project[] = [
           type: "feature"
         }
       ],
-      githubUrl: "https://github.com/arititemesgen/agriconnect-ethiopia",
-      demoUrl: "https://agriconnect.demo.et",
+      githubUrl: "https://github.com/arititemesgen/ethiconnect",
+      demoUrl: "https://ethiconnect.et",
       measuredResultsNote: "Platform user count and marketplace transaction volume are currently Not yet measured."
     }
   },
@@ -779,12 +779,12 @@ export const EXPERIENCE_ITEMS: ExperienceItem[] = [
     role: "Full-Stack Developer & Software Builder",
     organization: "Independent Development & Client Projects",
     period: "2023 - Present",
-    location: "Addis Ababa, Ethiopia / Remote",
+    location: "Hawassa, Ethiopia / Remote",
     type: "Engineering",
     description: "Building production-grade web applications, customized management solutions, and full-stack software for agricultural, pharmaceutical, and financial utility use cases.",
     highlights: [
       "Architected and deployed PharmaCore Ethiopia, bringing strict inventory and batch expiry tracking to pharmacy operations",
-      "Engineered AgriConnect Ethiopia, connecting regional crop producers directly with buyers across the nation with multi-language support",
+      "Engineered EthiConnect, connecting regional crop producers directly with buyers across the nation with multi-language support",
       "Developed SmartSpend for intuitive personal cash flow monitoring and visual expense analytics",
       "Leverages AI-assisted software development tools to accelerate delivery without compromising architectural rigor"
     ],
