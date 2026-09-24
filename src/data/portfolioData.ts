@@ -330,17 +330,17 @@ export const PROJECTS: Project[] = [
     id: "ethiconnect",
     slug: "ethiconnect",
     title: "EthiConnect",
-    subtitle: "Direct Farmer-to-Buyer Agricultural Marketplace",
+    subtitle: "Ethiopia’s Farmer, Producer & Buyer Marketplace",
     category: "AgriTech",
-    summary: "A specialized digital marketplace platform designed to bridge the gap between regional agricultural producers and urban buyers across Ethiopia, facilitating direct crop listings, price discovery, and order management.",
+    summary: "A production-oriented Ethiopian marketplace connecting farmers, producers, suppliers, transport providers, and buyers through regional discovery, listings, inquiries, messaging, and verified marketplace workflows.",
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80",
     period: "2024 - 2026",
-    role: "Full-Stack Developer",
-    technologies: ["React", "TypeScript", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS", "REST APIs", "Git"],
+    role: "Full-Stack Developer & Product Engineer",
+    technologies: ["TanStack Start", "React 19", "TypeScript", "Vite 7", "Cloudflare Workers", "Supabase", "Tailwind CSS v4", "React Query", "Leaflet"],
     caseStudy: {
-      valueProposition: "A bi-directional, tri-lingual agricultural marketplace connecting regional crop farmers directly with commercial urban buyers to eliminate predatory middleman markups.",
-      overview: "EthiConnect empowers local grain, pulse, and produce farmers by connecting them directly with wholesalers, hotel chains, and retail food distributors across Ethiopia. By providing transparent commodity pricing and direct inquiry channels, the system reduces reliance on predatory regional brokers.",
+      valueProposition: "A multilingual Ethiopian marketplace designed to make farmer, producer, supplier, transport, and buyer discovery more direct, transparent, and accessible.",
+      overview: "EthiConnect is a production-oriented marketplace for Ethiopia’s farmers, producers, suppliers, and buyers. The platform combines regional discovery, multilingual access, listing management, messaging, inquiries, location-aware discovery, and verified transport-provider workflows.",
       problem: "Smallholder farmers in regional Ethiopia face severe market information asymmetry and limited direct selling channels, leading to post-harvest crop spoilage and deflated earnings. Simultaneously, commercial buyers in urban centers struggle with sourcing consistency and price inflation.",
       targetUsers: [
         "Regional smallholder farmers and agricultural producer cooperatives",
@@ -348,8 +348,8 @@ export const PROJECTS: Project[] = [
         "Hotel chains, restaurants, and institutional catering purchasers",
         "Regional agricultural extension workers assisting local communities"
       ],
-      myRole: "Full-Stack Developer — Designed PostgreSQL relational schema, implemented Express API REST services, built responsive tri-lingual React user interfaces, and implemented low-bandwidth mobile optimization.",
-      solution: "Engineered a bi-directional web marketplace featuring tri-lingual support (English, Amharic Ge'ez script, Afaan Oromo Latin script), structured crop classification, region-based search filters, and direct buyer inquiry submission.",
+      myRole: "Full-Stack Developer & Product Engineer — Designed and implemented the marketplace experience, responsive multilingual interfaces, authentication and protected workflows, database-backed listing and inquiry features, messaging, location discovery, and deployment architecture.",
+      solution: "Engineered a multilingual web marketplace with English, Amharic, and Afaan Oromoo support, regional discovery, structured listings, buyer-seller inquiries and messaging, approximate location discovery, and verified transport-provider workflows.",
       coreFeatures: [
         "Tri-Lingual Localization: Dynamic UI string switching across English, Amharic, and Afaan Oromo",
         "Regional Produce Indexing: Search produce by crop type (Teff, Coffee, Pulses, Cereals) and Ethiopian administrative region",
@@ -358,16 +358,16 @@ export const PROJECTS: Project[] = [
         "Low-Bandwidth Mobile Layout: Lightweight client bundle engineered specifically for rural 3G network constraints"
       ],
       technicalArchitecture: [
-        "Relational PostgreSQL Database enforcing foreign key integrity across users, listings, regional territories, and orders",
-        "Node.js & Express.js REST API service with parameterized SQL queries and input sanitization layers",
-        "React Client with lightweight dictionary-based localization system and responsive flexbox containers",
-        "Optimized static asset pipeline delivering sub-second initial content paints over mobile network connections"
+        "TanStack Start v1 and React 19 application architecture with Vite 7 and Cloudflare Workers SSR",
+        "Supabase PostgreSQL, Authentication, and Storage for database-backed marketplace workflows and secure media handling",
+        "React Query for server-state management, Leaflet with clustering for marketplace location discovery, and Tailwind CSS v4 for responsive UI",
+        "Protected route and server-side authorization architecture supporting marketplace, messaging, profile, and administrative workflows"
       ],
       technologyStack: [
-        { category: "Frontend", items: ["React 18", "TypeScript", "Tailwind CSS", "Custom i18n Engine", "Lucide React"] },
-        { category: "Backend", items: ["Node.js", "Express.js", "TypeScript", "Parameterized SQL"] },
-        { category: "Database & Storage", items: ["PostgreSQL", "pg-node Client", "B-Tree Search Indexes"] },
-        { category: "Tooling & Environment", items: ["Vite", "Git & GitHub", "Postman", "Linux Containers"] }
+        { category: "Frontend", items: ["TanStack Start", "React 19", "TypeScript", "Tailwind CSS v4", "shadcn/ui"] },
+        { category: "Runtime & SSR", items: ["Cloudflare Workers", "Vite 7"] },
+        { category: "Database & Services", items: ["Supabase PostgreSQL", "Supabase Auth", "Supabase Storage", "React Query"] },
+        { category: "Maps & Quality", items: ["Leaflet", "Vitest", "Git & GitHub"] }
       ],
       databaseDesign: {
         overview: "Fully normalized relational database schema in 3rd Normal Form (3NF). Ensures relational consistency between regional administrative divisions, crop categories, farmer profiles, active listings, and buyer inquiries.",
