@@ -36,6 +36,102 @@ export const PROFILE = {
 
 export const PROJECTS: Project[] = [
   {
+    id: "betel-dental-clinic",
+    slug: "betel-dental-clinic",
+    title: "Betel Dental Clinic ERP & Patient Experience",
+    subtitle: "Multi-Branch HealthTech Management Platform",
+    category: "HealthTech",
+    summary: "A production-ready dental clinic platform combining a warm patient-facing booking experience with multi-branch operations, appointment management, clinical workflows, marketing content, and offline-aware synchronization.",
+    featured: true,
+    coverImage: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
+    period: "2026",
+    role: "Full-Stack Engineer & Product Designer",
+    technologies: ["React", "TypeScript", "Node.js", "Express.js", "Vite", "PostgreSQL", "Drizzle ORM", "Firebase", "Tailwind CSS"],
+    githubUrl: "https://github.com/AritiTemesgen16/betel-dental-clinic-",
+    caseStudy: {
+      valueProposition: "A connected HealthTech platform helping patients book care confidently while giving clinic teams a reliable operational system across branches.",
+      overview: "Betel Dental Clinic is a multi-branch dental care platform built for a real clinic network in Ethiopia. The product brings together a modern public website, online appointment booking, branch-aware availability, clinical and patient management, marketing content, media handling, and a staff dashboard.",
+      problem: "Patients need a welcoming, low-friction way to discover services and request appointments, while clinic teams need consistent appointment, patient, branch, finance, inventory, and content workflows across multiple locations.",
+      targetUsers: [
+        "Patients looking for trusted dental care and online appointment requests",
+        "Reception and appointment teams coordinating branch schedules",
+        "Dentists and clinical staff managing patient records and treatment workflows",
+        "Clinic administrators overseeing branches, finance, inventory, and public content"
+      ],
+      myRole: "Full-Stack Engineer & Product Designer — designed the patient journey, implemented the React frontend and Express backend, connected persistence and synchronization layers, and shaped the booking-focused visual refresh.",
+      solution: "Built a responsive public experience with multilingual content, branch-aware booking, service discovery, testimonials, promotions, and a high-conversion mobile booking path. Behind it is a role-aware dashboard for clinic operations, with database-backed appointments, patient records, clinical modules, marketing content, audit logs, and offline synchronization support.",
+      coreFeatures: [
+        "Patient-facing dental services, branch, dentist, promotion, gallery, testimonial, and contact pages",
+        "Four-step online appointment flow for branch, service, date/time, and patient details",
+        "Multi-branch clinic context with branch-specific availability and contact information",
+        "Patient, appointment, staff, finance, inventory, notifications, and audit management modules",
+        "Clinical records foundation covering treatment plans, diagnoses, encounters, prescriptions, and dental charts",
+        "Responsive booking-focused redesign with mobile sticky CTA, modern visual hierarchy, and accessible focus states",
+        "Multilingual content foundation for English, Amharic, and Afaan Oromo",
+        "Offline-aware synchronization path for resilient clinic operations"
+      ],
+      technicalArchitecture: [
+        "React 19 and TypeScript single-page application with a lightweight route-aware application shell",
+        "Node.js and Express server exposing public booking, clinic operations, media, and synchronization endpoints",
+        "PostgreSQL persistence through Drizzle ORM with migration and seed workflows",
+        "Firebase integration for authentication and client-side services",
+        "Tailwind CSS design system with responsive states, clinic tokens, reduced-motion support, and reusable UI components"
+      ],
+      technologyStack: [
+        { category: "Frontend", items: ["React 19", "TypeScript", "Tailwind CSS", "Lucide Icons", "Vite"] },
+        { category: "Backend & Data", items: ["Node.js", "Express.js", "PostgreSQL", "Drizzle ORM", "REST APIs"] },
+        { category: "Platform & Operations", items: ["Firebase", "Capacitor", "Offline Sync", "Role-Based Access", "Git"] }
+      ],
+      databaseDesign: {
+        overview: "A relational clinic operations schema connecting branches, staff, patients, appointments, clinical records, finance, inventory, notifications, media, and audit history.",
+        primaryEntities: [
+          { name: "branches", description: "Clinic locations, contact details, operating context, and chair capacity.", keyFields: [{ name: "id", type: "UUID", description: "Unique branch identifier" }, { name: "code", type: "String", description: "Human-readable branch code" }] },
+          { name: "appointments", description: "Patient booking requests and scheduled appointment details.", keyFields: [{ name: "id", type: "UUID", description: "Appointment identifier" }, { name: "appointment_date", type: "Date", description: "Requested appointment date" }, { name: "branch_id", type: "UUID", description: "Selected clinic branch" }] },
+          { name: "patients", description: "Patient profiles and clinical continuity records.", keyFields: [{ name: "id", type: "UUID", description: "Patient identifier" }, { name: "phone", type: "String", description: "Primary patient contact" }] }
+        ],
+        indexingStrategy: "Indexes support branch/date availability lookups, patient contact search, appointment status workflows, and audit timeline queries."
+      },
+      importantTechnicalDecisions: [
+        { title: "Branch-Aware Booking", decision: "Keep branch context in the public booking flow and availability queries.", rationale: "Patients can choose a convenient location while staff receive requests with the correct operational context." },
+        { title: "Reusable Public UI System", decision: "Use shared buttons, cards, layouts, badges, and responsive design tokens.", rationale: "A healthcare product needs consistency and trust across many content-heavy pages without slowing future updates." },
+        { title: "Offline-Aware Operations", decision: "Queue supported operations for synchronization when connectivity returns.", rationale: "Clinic teams should be able to keep working through unreliable network conditions."
+        }
+      ],
+      challenges: [
+        { challenge: "Designing a public experience that feels warm and reassuring while also supporting a large clinical operations platform.", solution: "Separated the public patient journey from the dashboard shell, then aligned both with shared accessible components and a clear clinic visual system." },
+        { challenge: "Supporting branch-specific appointment availability without making booking feel complicated.", solution: "Reduced the patient journey to four progressive steps with clear progress feedback and immediate validation." }
+      ],
+      securityConsiderations: [
+        "Role-aware dashboard access and protected administrative routes",
+        "Server-side validation for appointment and operational payloads",
+        "Audit logging foundation for sensitive clinic operations",
+        "Environment-based credential and database configuration"
+      ],
+      performanceConsiderations: [
+        "Vite production build with optimized static assets",
+        "Lazy-loaded media and responsive image presentation",
+        "Offline-aware queueing for supported operations",
+        "Reusable components to keep the public experience consistent and maintainable"
+      ],
+      futureImprovements: [
+        "Patient self-service portal for appointment history and reminders",
+        "Automated SMS or WhatsApp appointment confirmations",
+        "Expanded reporting dashboards for branch utilization and care outcomes"
+      ],
+      lessonsLearned: [
+        "Healthcare UX needs to make trust and the next action obvious before adding more information.",
+        "Branch and operational context should be captured early so the clinic team receives actionable booking requests."
+      ],
+      screenshots: [
+        { url: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80", caption: "Modern patient-facing dental clinic experience", type: "feature" },
+        { url: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=80", caption: "Clean, reassuring dental care environment", type: "mobile" }
+      ],
+      githubUrl: "https://github.com/AritiTemesgen16/betel-dental-clinic-",
+      demoUrl: "",
+      measuredResultsNote: "Production repository and booking platform delivered for Betel Dental Clinic; public performance metrics are not published."
+    }
+  },
+  {
     id: "melala-pharmaceutical",
     slug: "melala-pharmaceutical",
     title: "Melala Pharmaceutical Wholesale",
