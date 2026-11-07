@@ -1,0 +1,11 @@
+Cloudflare setup verification:
+- GitHub repository: AritiTemesgen16/Ariti-portfolio-website-
+- Branch: migration/cloudflare-pages-safe
+- Unique preview project name: ariti-portfolio-cloudflare-preview
+- Intended build command: npm run build
+- Intended output directory: dist
+- Existing account projects inspected: ethiconnect and betel-dental-proxy only; no partial portfolio project existed after the first opaque error.
+- No local Cloudflare, Resend, Cloudinary, contact, or owner-password environment variables were present; no secret values were read or printed.
+- Render/live domain remains unchanged.
+
+Cloudflare Pages migration preview is configured from the migration branch.
